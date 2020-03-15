@@ -2,20 +2,34 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const Resource = require('../models/resource');
 
 // Multer config
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, 'uploads/resources');
   },
-  filename: function(req, file, cb) {
+  filename: (req, file, cb) => {
+    // const uniquePrefix = Date.now()
     cb(null, new Date().toISOString() + "_" + file.originalname)
   }
 });
-const upload = multer({storage});
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    // accept the file
+    cb(null, true)
+  } else {
+    // reject the file
+    cb(new Error("File does not meet requirements"), false)
+  }
+}
 
-const Resource = require('../models/resource');
+const limits = {
+  filesize: 1024 * 1024 * 5, // 5MB max
+}
+
+const upload = multer({storage, limits, fileFilter});
 
 
 // ===============================
@@ -33,10 +47,9 @@ router.post('/', upload.single('resourceFile'), (req, res, next) => {
     _id: new mongoose.Types.ObjectId(),
     dateCreated: new Date(),
     owner: req.body.owner,
-	  imageUrl: req.body.imageUrl,
 	  title: req.body.title,
 	  description: req.body.description,
-	  linkUrl: req.body.linkUrl,
+	  linkUrl: req.file.path,
 	  grades: req.body.grades,
 	  subject: req.body.subject,
 	  standards: req.body.standards

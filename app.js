@@ -1,4 +1,4 @@
-// TODO: Working on resources routes
+// TODO: Working on resources routes. Just added ability to upload files, neet to continue working on this.
 // TODO: Will likely need to make the webapp before being able to populate with resources/test well
 
 const express = require('express');
@@ -31,6 +31,9 @@ mongoose.connect(
     useUnifiedTopology: true
   }
 );
+
+// Make uploads folder public
+app.use('/uploads', express.static('uploads'));
 
 // Setup view engine
 app.set('view engine', 'ejs');
