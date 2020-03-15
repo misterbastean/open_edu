@@ -1,0 +1,10 @@
+logs
+*.log
+.npm
+*.tgz
+.env
+.DS_Store
+nodemon.json
+node_modules/
+build/
+uploads/
