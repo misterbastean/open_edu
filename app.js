@@ -1,11 +1,13 @@
 // TODO: Working on resources routes. Just added ability to upload files, neet to continue working on this.
 // TODO: Will likely need to make the webapp before being able to populate with resources/test well
 
+
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 
 // ================
 // Import Routes
@@ -23,6 +25,7 @@ const unitRoutes = require("./site/routes/units");
 const resourceRoutes = require("./site/routes/resources");
 const userRoutes = require("./site/routes/users");
 
+
 // Mongoose setup
 mongoose.connect(
   `mongodb+srv://jbastean:${process.env.MONGO_ATLAS_PW}@open-edu-zejdn.mongodb.net/test?retryWrites=true&w=majority`,
@@ -32,18 +35,19 @@ mongoose.connect(
   }
 );
 
-// Make uploads folder public
-app.use('/uploads', express.static('uploads'));
 
 // Setup view engine
 app.set('view engine', 'ejs');
 
+
 // Morgan logging setup
 app.use(morgan('dev'));
+
 
 // BodyParser setup
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 // Handle CORS errors by allowing any client to interact with it
 app.use((req, res, next) => {
@@ -55,6 +59,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+
 // ================
 // Use routes
 // ================
@@ -64,6 +70,7 @@ app.use('/api/units', apiUnitRoutes);
 app.use('/api/resources', apiResourceRoutes);
 app.use('/api/comments', apiCommentRoutes);
 app.use('/api/merges', apiMergeRoutes);
+app.use('/uploads', express.static('uploads')); // Make uploads folder public
 
 // WebApp Routes
 app.use("/", indexRoutes);
@@ -78,6 +85,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
+
 // Catch any errors thrown
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
@@ -86,4 +94,5 @@ app.use((error, req, res, next) => {
   })
 });
 
+// Export
 module.exports = app;

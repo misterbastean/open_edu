@@ -15,8 +15,52 @@ const storage = multer.diskStorage({
   }
 });
 
+/*
+List of File Types to Accept:
+Documents: .docx, .pdf, .odt, .rtf, .txt, .wpd, .pages
+Images: .bmp, .gif, .jpg, .jpeg, .png, .svg
+Presentations: .pptx, .odp, .key
+Spreadsheets: .csv, .xlsx, .ods, .numbers
+Audio: .mp3
+Video: .avi, .h264, .m4v, .mov, .mp4, .mpg, .mpeg
+Compressed: .7z, .rar, .zip
+Other: .otf,
+*/
+
+const acceptedFileTypes = [
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+  "application/pdf",
+  "application/vnd.oasis.opendocument.text", // odt
+  "text/rtf",
+  "text/plain", // txt
+  "application/vnd.wordperfect", // wpd
+  "application/x-iwork-pages-sffpages", // pages
+  "image/bmp",
+  "image/gif",
+  "image/jpeg",
+  "image/png",
+  "image/svg+xml", // svg
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation", // pptx
+  "application/vnd.oasis.opendocument.presentation", // odp
+  "application/x-iwork-keynote-sffkey", // key
+  "text/csv",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // xlsx
+  "application/vnd.oasis.opendocument.spreadsheet", // ods
+  "application/x-iwork-numbers-sffnumbers", // numbers
+  "audio/mpeg", // mp3
+  "video/x-msvideo", // avi
+  "video/H264",
+  "video/x-m4v",
+  "video/quicktime", // movie
+  "video/mp4",
+  "application/x-7z-compressed", // 7z
+  "application/vnd.rar", // rar
+  "application/zip",
+  "font/otf"
+]
+
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  if (acceptedFileTypes.includes(file.mimetype)) {
     // accept the file
     cb(null, true)
   } else {
@@ -26,7 +70,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 const limits = {
-  filesize: 1024 * 1024 * 5, // 5MB max
+  fileSize: 1024 * 1024 * 5, // 5MB max
 }
 
 const upload = multer({storage, limits, fileFilter});
@@ -42,6 +86,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', upload.single('resourceFile'), (req, res, next) => {
+  console.log(req.file)
   // Create new resource model
   const resource = new Resource({
     _id: new mongoose.Types.ObjectId(),
