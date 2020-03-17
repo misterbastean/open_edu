@@ -80,9 +80,25 @@ const upload = multer({storage, limits, fileFilter});
 // GENERIC RESOURCE ROUTES
 // ===============================
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: "Handling GET requests to /api/resources"
+  const limitNum = req.query.limit || 20
+  console.log(limitNum)
+  Resource.find({}).limit(limitNum)
+  .exec((err, foundResources) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "We goofed...",
+        error: err
+      })
+    } else {
+      console.log("Sending resources");
+      res.status(200).json(foundResources)
+    }
   })
+  // .then
+  // res.status(200).json({
+  //   message: "Handling GET requests to /api/resources"
+  // })
 });
 
 router.post('/', upload.single('resourceFile'), (req, res, next) => {
