@@ -1,4 +1,4 @@
-// TODO: Working on resources routes. Just added ability to upload files, neet to continue working on this.
+// TODO: Finished basic resources post route. Need to create seedDB function and run on reload, then start working on other resource routes.
 // TODO: Will likely need to make the webapp before being able to populate with resources/test well
 
 
@@ -7,6 +7,9 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
+// Testing Imports
+const seedDB = require('./utils/seedDB');
 
 
 // ================
@@ -93,6 +96,9 @@ app.use((error, req, res, next) => {
     message: error.message
   })
 });
+
+// Seed the DB
+seedDB();
 
 // Export
 module.exports = app;
