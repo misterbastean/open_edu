@@ -81,7 +81,6 @@ const upload = multer({storage, limits, fileFilter});
 // ===============================
 router.get('/', (req, res, next) => {
   const limitNum = req.query.limit || 20
-  console.log(limitNum)
   Resource.find({}).limit(limitNum)
   .exec((err, foundResources) => {
     if (err) {
@@ -95,10 +94,6 @@ router.get('/', (req, res, next) => {
       res.status(200).json(foundResources)
     }
   })
-  // .then
-  // res.status(200).json({
-  //   message: "Handling GET requests to /api/resources"
-  // })
 });
 
 router.post('/', upload.single('resourceFile'), (req, res, next) => {
@@ -154,9 +149,32 @@ router.get('/:resourceId', (req, res, next) => {
 
 });
 
+// Update specific resource properties (NOT the file itself)
 router.put('/:resourceId', (req, res, next) => {
-  res.status(200).json({
-    message: `Update resource with id of ${req.params.resourceId}`
+  // Build resource object
+  let updatedResource = {
+    lastUpdated: new Date()
+  };
+  if (req.query.title) { updatedResource.title = req.query.title };
+  if (req.query.description) { updatedResource.description = req.query.description };
+  if (req.query.linkUrl) { updatedResource.linkUrl = req.query.linkUrl };
+  if (req.query.grades) { updatedResource.grades = req.query.grades };
+  if (req.query.subject) { updatedResource.subject = req.query.subject };
+  if (req.query.standards) { updatedResource.standards = req.query.standards };
+
+  // Update resource in DB
+  Resource.findByIdAndUpdate(req.params.resourceId, updatedResource, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "We goofed...",
+        error: err
+      })
+    } else {
+      res.status(200).json({
+        message: `Updated resource with id of ${req.params.resourceId}.`
+      })
+    }
   })
 });
 
