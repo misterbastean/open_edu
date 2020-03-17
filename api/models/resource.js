@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const resourceSchema = mongoose.Schema({
-  _id: mongoose.Schema.ObjectId,
+  // _id: mongoose.Schema.ObjectId,
   owner: { type: "String", required: true }, // Change to user relationship
   dateCreated: { type: Date, required: true },
   title: { type: String, required: true},
@@ -18,7 +18,8 @@ const resourceSchema = mongoose.Schema({
     merge: String, // Change to merge relationship
     message: String
   }],
-  lastUpdated: Date
+  lastUpdated: Date,
+  timesDownloaded: Number
 });
 
 module.exports = mongoose.model('Resource', resourceSchema);

@@ -86,7 +86,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', upload.single('resourceFile'), (req, res, next) => {
-  console.log(req.file)
   // Create new resource model
   const resource = new Resource({
     _id: new mongoose.Types.ObjectId(),
