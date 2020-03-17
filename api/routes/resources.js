@@ -210,18 +210,21 @@ router.get('/:resourceId/standards', (req, res, next) => {
       })
     }
   })
-
-});
-
-router.put('/:resourceId/standards', (req, res, next) => {
-  res.status(200).json({
-    message: `Update standards of resource with id of ${req.params.resourceId}`
-  })
 });
 
 router.get('/:resourceId/comments', (req, res, next) => {
-  res.status(200).json({
-    message: `Show comments of resource with id of ${req.params.resourceId}`
+  Resource.findById(req.params.resourceId, (err, foundResource) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({
+        err
+      })
+    } else {
+      res.status(200).json({
+        _id: foundResource._id,
+        comments: foundResource.comments
+      })
+    }
   })
 });
 
