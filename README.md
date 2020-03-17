@@ -82,4 +82,59 @@ user and a specific Resource or Unit.
 | /comments/query | GET | Get all comments that match a query | N | N
 
 
-##
+## Request Attributes
+### Resource
+When a request is made to /requests, expect each item to return JSON that follows this format:
+```json
+{
+  "_id": {"$oid": "String"},
+  "owner": "User",
+  "dateCreated": "Date",
+  "title": "String",
+  "description": "String",
+  "linkUrl": "String",
+  "grades": ["String"],
+  "subject": "String",
+  "standards": ["String"],
+  "stars": ["String"],
+  "comments": ["Comment"],     // Will update when Comments are implemented
+  "pendingMerges": ["Merge"],  // Will update when Merges are implemented
+  "acceptedMerges": ["Merge"], // Will update when Merges are implemented
+  "rejectedMerges": [{         // Will update when Merges are implemented
+    "_id": {"$oid": "String"},
+    "merge": "String",
+    "message": "String"
+  }],
+  "lastUpdated": "Date",
+  "timesDownloaded": "Number",
+  "__v": "Number"
+}
+```
+
+For example:
+
+```json
+{
+  "_id":{"$oid":"5e70e557a47475260b865eed"},
+  "owner":"josh",
+  "dateCreated":{"$date":{"$numberLong":"1584457047886"}},
+  "title":"Macbeth Study Guide",
+  "description":"This is a study guide to help students with Macbeth",
+  "linkUrl":"/uploads/resources/Macbeth_Study_Guide.docx",
+  "grades":["9","10","11","12"],
+  "subject":"ELA",
+  "standards":["CCSS.ELA.1.2","CCSS.ELA.3.4"],
+  "stars":["user1","user2"],
+  "comments":["This is awesome!","Great job!"],
+  "pendingMerges":["merge_12345","merge_09876"],
+  "acceptedMerges":["merge_11111"],
+  "rejectedMerges":[
+    {"_id":{"$oid":"5e70e557a47475260b865eee"},
+    "merge":"merge_00000",
+    "message":"Please fix the typos"}
+  ],
+  "lastUpdated":{"$date":{"$numberLong":"1577874030000"}},
+  "timesDownloaded":{"$numberInt":"15"},
+  "__v":{"$numberInt":"0"}
+}
+```
