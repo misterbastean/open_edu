@@ -197,9 +197,20 @@ router.delete('/:resourceId', (req, res, next) => {
 // SPECIFIC RESOURCE METHODS
 // ==========================
 router.get('/:resourceId/standards', (req, res, next) => {
-  res.status(200).json({
-    message: `Show standards of resource with id of ${req.params.resourceId}`
+  Resource.findById(req.params.resourceId, (err, foundResource) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({
+        err
+      })
+    } else {
+      res.status(200).json({
+        _id: foundResource._id,
+        standards: foundResource.standards
+      })
+    }
   })
+
 });
 
 router.put('/:resourceId/standards', (req, res, next) => {
