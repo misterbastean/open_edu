@@ -179,8 +179,17 @@ router.put('/:resourceId', (req, res, next) => {
 });
 
 router.delete('/:resourceId', (req, res, next) => {
-  res.status(200).json({
-    message: `Delete resource with id of ${req.params.resourceId}`
+  Resource.findByIdAndDelete(req.params.resourceId, (err, deletedResource) => {
+    if (err) {
+      res.status(500).json({
+        message: "Unable to delete...",
+        error: err
+      })
+    } else {
+      res.status(200).json({
+        message: `Delete resource with id of ${req.params.resourceId}`
+      })
+    }
   })
 });
 
