@@ -228,11 +228,13 @@ router.get('/:resourceId/comments', (req, res, next) => {
   })
 });
 
-router.put('/:resourceId/comments', (req, res, next) => {
-  res.status(200).json({
-    message: `Update comments of resource with id of ${req.params.resourceId}`
-  })
-});
+// TODO: NEED TO FIGURE OUT BEST WAY TO IMPLEMENT THE ADDCOMMENT METHOD
+
+// router.put('/:resourceId/comments', (req, res, next) => {
+//   res.status(200).json({
+//     message: `Update comments of resource with id of ${req.params.resourceId}`
+//   })
+// });
 
 router.get('/:resourceId/pendingmerges', (req, res, next) => {
   res.status(200).json({
