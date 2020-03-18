@@ -1,6 +1,8 @@
-// TODO: Finished basic resources post route. Need to create seedDB function and run on reload, then start working on other resource routes.
-// TODO: Will likely need to make the webapp before being able to populate with resources/test well
+// TODO: NEed to figure out how to handle keeping files current. When a new one is approved, do we delete the old one?
+// Will likely need to just rename the files to _id.extension (e.g. 12345abc.docx) in order to keep the link working.
+// Can we just overwrite the original file so we don't have to actually delete it at all?
 
+// Currently working on Unit routes
 
 const express = require('express');
 const app = express();
