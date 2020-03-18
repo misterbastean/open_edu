@@ -1,11 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require("mongoose");
+const Unit = require("../models/unit");
 
 
 // ===============================
 // GENERIC UNIT ROUTES
 // ===============================
 router.get('/', (req, res, next) => {
+  const limit = req.query.limit || 20;
+  Unit.find({}).limit(limit)
+  .exec((err, foundUnits) => {
+    if (err) {
+      res.status(500).json({
+        err
+      })
+    } else {
+      res.status(200).json(foundUnits)
+    }
+  })
   res.status(200).json({
     message: "Handling GET requests to /api/units"
   })
